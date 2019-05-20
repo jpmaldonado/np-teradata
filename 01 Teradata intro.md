@@ -1,16 +1,13 @@
 # Intro to Teradata
 ---
 
-## Data Warehousing
+## In this lecture:
 
-![](img/dwh.png)
-
----
-
-## RDBMS
-
-![](img/rdbms.png)
-
+- Teradata architecture:
+	- Overview.
+	- Storage architecture.
+	- Retrieval architecture.
+- Getting started with SQL Assistant (SQLA).
 
 ---
 ## What is Teradata?
@@ -69,18 +66,19 @@
 The key components of Teradata are: 
 - **Node:** It is the basic unit in Teradata System. Each individual server in a Teradata system is referred as a Node. 
 - A node consists of its own operating system, CPU, memory, own copy of Teradata RDBMS software and disk space.
+- A node can contain several AMPs.
 - A **cabinet** consists of one or more Nodes.   
 
 ---
 ## Components of Teradata (cont.)
 - **Parsing Engine:** Parsing Engine is responsible for receiving queries from the client and preparing an efficient execution plan. 
 - The responsibilities of parsing engine are:
-	- Receive the SQL query from the client. 
- 	- Parse the SQL query check for syntax errors.
- 	- Check if the user has required privilege against the objects used in the SQL query. 
- 	- Check if the objects used in the SQL actually exists. 
- 	- Prepare the execution plan to execute the SQL query and pass it to BYNET. 
- 	- Receives the results from the AMPs and send to the client. 
+	- Receive the SQL query from the client.
+	- Parse the SQL query check for syntax errors.
+	- Check if the user has required privilege against the objects used in the SQL query.
+	- Check if the objects used in the SQL actually exists. 
+	- Prepare the execution plan to execute the SQL query and pass it to BYNET.
+	- Receives the results from the AMPs and send to the client. 
 
 ---
 ## Components of Teradata (cont.)
@@ -104,16 +102,59 @@ The key components of Teradata are:
 - The AMP stores these records on its disks
 
 ---
+## How does Teradata store rows?
+
+![](img/order.PNG)
+
+
+---
+## Space
+- **Permanent Space:** the maximum amount of space available for the user/database to hold data rows. Permanent tables, journals, fallback tables and secondary index sub-tables use permanent space. Not pre-allocated for user/database, rather defined as an upper bound.
+- **Spool Space:** Spool space is the unused permanent space which is used by the system to keep the intermediate results of the SQL query. Users without spool space cannot execute any query.
+- **Temp Space:** Temp space is the unused permanent space which is used by Global Temporary tables.
+
+
+---
+## Compression
+
+- Compression is used to reduce the storage used by the tables.
+- It can compress up to 255 distinct values including NULL. 
+- Since the storage is reduced, Teradata can store more records in a block which results in improved query response time.
+- Compression can be added at table creation using `CREATE TABLE` or after table creation using `ALTER TABLE`.
+- When compression is applied on a column, the values for this column is not stored with the row. Instead the values are stored in the Table header in each AMP and only presence bits are added to the row to indicate the value.
+
+---
+## Compression - Limitations
+- Only 255 values can be compressed per column.
+- Primary Index column cannot be compressed.
+- Volatile tables cannot be compressed.
+
+---
+## Example
+```
+CREATE SET TABLE employee
+(
+EmployeeNo integer,
+FirstName CHAR(30),
+LastName CHAR(30),
+BirthDate DATE FORMAT 'YYYY-MM-DD-',
+JoinedDate DATE FORMAT 'YYYY-MM-DD-',
+Gender CHAR(1) ,
+DepartmentNo CHAR(02) COMPRESS(1,2,3)
+)
+UNIQUE PRIMARY INDEX(EmployeeNo);
+```
+
+---
+# Retrieval Architecture
+
+
+---
 ## Retrieval Architecture
 - When the client runs queries to retrieve records, Parsing Engine sends a request to BYNET.
 - BYNET sends the retrieval request to appropriate AMPs.
 - Then AMPs search their disks in parallel and identify the required records and sends to BYNET. 
 - BYNET then sends the records to Parsing Engine which in turn will send to the client.
-
----
-## How does Teradata store rows?
-
-![](img/order.PNG)
 
 
 ---
@@ -135,7 +176,8 @@ The key components of Teradata are:
 - A table ~~must~~ have a **Primary Index** that cannot be changed.
 	- From Teradata 13.00 tables may *not* have a primary index. Rows are randomly distributed to AMPs.
 	- No PI tables are typically used as staging tables for initial load by FastLoad or TPump Array Inserts (because load is faster). 
-- Primary Index can be unique (**UPI**) or non-unique (**NUPI**)
+- Primary Index can be unique (**UPI**) or non-unique (**NUPI**).
+- Primary Indexes are not the same as primary keys
 
 
 ---
@@ -224,7 +266,7 @@ To get started, you need to download:
 ## Test connection
 
 - On your `PowerShell` or `UNIX` console, ping the IP address of your DB with the command `ping 192.168.47.129`
-![](img/ps.png)
+![](img/ps.PNG)
 
 ---
 ## Connect with SQLA
@@ -232,7 +274,7 @@ To get started, you need to download:
 - Default credentials are dbc/dbc.
 - Run a simple query.
 
-![](img/sqla.png)
+![](img/sqla.PNG)
 
 ---
 ## SQLA Shortcuts

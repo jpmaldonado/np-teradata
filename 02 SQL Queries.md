@@ -1,5 +1,9 @@
 # SQL in Teradata
 
+---
+## In this lecture
+- DDL, DML, DCL (review of SQL commands).
+- Teradata built-in and aggregate functions
 
 ---
 ## Many faces of SQL
@@ -141,6 +145,22 @@ DROP TABLE <table>;
 - `SET ROLE`, `SET SESSION`, `SET TIME ZONE`
 
 ---
+## VIEWS
+- Same DDL commands apply to **views**.
+- Views are queries build on demand, they are useful to restrict data to a level of aggregation.
+**Example**
+```
+CREATE VIEW  products_more_than_3_sold AS 
+SELECT  productid, productname, productprice 
+FROM  product
+WHERE  productid IN (
+			SELECT  productid
+			FROM  soldvia
+            		GROUP BY productid
+                    	HAVING SUM(noofitems) > 3);
+```
+
+---
 # DML
 
 ---
@@ -197,3 +217,104 @@ UPDATE table SET column2 = 'value 3' WHERE column1 = 'value1'
 - The number of columns from each `SELECT` statement should be same. 
 - The data types from each `SELECT` must be compatible. 
 - `ORDER BY` should be included only in the final `SELECT` statement.
+
+---
+## `UNION`
+`UNION` is used to combine results from multiple SELECT statements. It ignores duplicates. 
+
+```
+SELECT col1, col2, col3… 
+FROM  <table 1> 
+[WHERE condition] 
+UNION  
+SELECT col1, col2, col3… 
+FROM  <table 2> 
+[WHERE condition];
+```
+
+---
+## `UNION ALL`
+- `UNION ALL` is similar to `UNION`. It combines results from multiple tables including duplicate rows. 
+
+**Example**
+
+|`UNION ALL` |	`UNION` |
+-------------|----------|
+|EmployeeNo |EmployeeNo |
+|        101| 101 |
+|        104| 102 |
+|        102| 103 |
+|        105| 104 |
+|        103| 105 |
+|        101| 
+|        104| 
+
+
+---
+## `INTERSECT` and `MINUS`/`EXCEPT`
+
+- `INTERSECT` returns the intersection (common rows).
+- `MINUS` or `EXCEPT` return the rows in the first table, but removing the rows in the second table.
+
+```
+SELECT EmployeeNo 
+FROM  
+Employee 
+INTERSECT 
+SELECT EmployeeNo 
+FROM  
+Salary; 
+```
+
+---
+# Built-in and aggregate functions
+
+---
+## Built-in functions
+
+- These are functions which do not need any sort of arguments but still return information about the system; user, date, time, session etc. 
+- Built-in functions are sometimes referred to as special registers.
+SELECT <Built-In Function>
+
+
+---
+## Built-in functions (cont.)
+- `ACCOUNT:` – Your Teradata Account information.
+- `CURRENT_DATE:` Returns the current system date.
+- `CURRENT_TIME:` This function returns the current system time and current session ‘Time Zone’ displacement. 
+- `CURRENT_TIMESTAMP:` Returns the current system timestamp (including year, month and day) and current session. 
+
+---
+## Built-in functions (cont.)
+- `DATABASE:` Returns the name of the default database for the current user.
+- `DATE:` Same as `CURRENT_DATE`.
+- `SESSION:` Returns a number for the session the current user is in.
+- `TIME:` Current time based on a 24-hour day; mean to say for 4:00 pm, you would see 16:00:00.
+- `USER:` If you have forgotten your username after you have logged in, this command would come to your rescue. 
+
+---
+## Aggregate
+Teradata supports common aggregate functions. They can be used with the `SELECT` statement. 
+- `COUNT:` Counts the rows.
+- `SUM:` Sums up the values of the specified column(s). 
+- `MAX:` Returns the large value of the specified column.
+- `MIN:` Returns the minimum value of the specified column.
+- `AVG:` Returns the average value of the specified column. 
+
+---
+# Your turn!
+
+---
+## Exercise/Lab
+- On the `tutorial` database we created, look for the `product` table. 
+1. Create a view that shows a business user the `productid`, `productname` and `productprice` of products sold more than three times. 
+2. Create a view from the same table (with the same columns) that shows products sold in multiple transactions.
+- **Hint:** You can borrow inspiration from the slides, be sure you understand what is going on.
+
+---
+## Exercise/Lab (cont.)
+3. Which products are sold often (more than three times) and to many customers (appear in many transactions).
+4. Which products are sold often, but in one transaction?
+5. Which products (from the `product` table) are sold at a price below average?
+
+

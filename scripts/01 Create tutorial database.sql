@@ -1,7 +1,7 @@
 /* Test query */
 SELECT * FROM dbc.dbcinfo; 
 
-/* Create a new database and user ==> This should be done under dbc user*/
+/* Create a new database and user ==> This should be done under the user `dbc`*/
 CREATE DATABASE tutorial FROM dbc AS PERM=10e6; /* Once the database is added, right click on DB Explorer to add it*/
 CREATE USER test FROM tutorial AS PASSWORD=********, PERM=5e6;
 GRANT ALL ON tutorial TO test;

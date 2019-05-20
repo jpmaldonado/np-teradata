@@ -1,0 +1,7 @@
+- 04 Solve exercise for indexes.
+- what is the data dictionary and where is it? storage in database vs storage in data dictionary
+- 05 JOINs, correlated subqueries, joins vs correlated subqueries (lecture 05)
+- 07 example for running total on different number of rows and exercise	
+- User defined functions and types
+- 08 differences between users and accounts? go deeper on data protection & user management. what does REFERENCES privilege mean?
+- 09 UPSERT. Exercises
