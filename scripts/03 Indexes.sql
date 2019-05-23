@@ -3,7 +3,7 @@
 CREATE volatile TABLE salary_non_ppi
 (
 id INT,
-Sal INT,
+salary INT,
 dob DATE,
 bonus INT
 ) primary index( id)
@@ -28,7 +28,7 @@ SELECT * from salary_non_ppi where dob <= '2017-09-01';
 CREATE volatile TABLE salary_ppi
 (
 id INT,
-Sal int,
+salary int,
 dob date,
 bonus int
 ) primary index( id)
