@@ -1,0 +1,76 @@
+/* PIVOT syntax example */
+CREATE  VOLATILE TABLE ledger
+( 
+  year_nr          INTEGER,
+  Quarter          VARCHAR(10),
+  Sales            DECIMAL(18,0)
+)
+ON COMMIT PRESERVE ROWS;
+
+
+INSERT INTO ledger VALUES(2015,'Q1',90);
+INSERT INTO ledger VALUES(2015,'Q2',70);
+INSERT INTO ledger VALUES(2015,'Q3',130);
+INSERT INTO ledger VALUES(2015,'Q4',30);
+INSERT INTO ledger VALUES(2016,'Q1',40);
+INSERT INTO ledger VALUES(2016,'Q2',50);
+INSERT INTO ledger VALUES(2016,'Q3',120);
+INSERT INTO ledger VALUES(2016,'Q4',20);
+
+
+SELECT * FROM ledger;
+
+Output:
+year  Quarter   Sales
+2015  Q1        90
+2015  Q2        70
+2015  Q3        130
+2015  Q4        30
+2016  Q1        40
+2016  Q2        50
+2016  Q3        120
+2016  Q4        20
+
+SELECT *
+FROM ledger PIVOT (
+SUM(sales)
+FOR Quarter IN ('Q1' AS Q1,
+                'Q2' AS Q2,
+                'Q3' AS Q3,
+                'Q4' AS Q4)
+)Temp_pivot;
+
+
+/* UNPIVOT */
+
+CREATE  VOLATILE TABLE student
+( 
+  id      INTEGER,
+  name    VARCHAR(10),
+  english INTEGER,
+  maths   INTEGER,
+  science INTEGER
+)
+ON COMMIT PRESERVE ROWS;
+
+
+INSERT INTO student(123,'Harry',90,95,95);
+INSERT INTO student(345,'Porter',70,80,90);
+
+
+Output:
+id  name   english maths science
+123 Harry   90       95       95
+345 Porter  70       80       90
+
+
+SELECT * FROM TD_UNPIVOT(
+ON( SELECT * FROM student)
+USING
+VALUE_COLUMNS('Marks')
+UNPIVOT_COLUMN('subject')
+COLUMN_LIST('english', 'maths', 'science')
+COLUMN_ALIAS_LIST('english', 'maths', 'science' )
+)X;
+
+

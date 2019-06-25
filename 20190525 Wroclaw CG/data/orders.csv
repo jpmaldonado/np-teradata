@@ -494,7 +494,6 @@ Customer ID,Date,Subtotal,State,Country
 1104,12/17/2008,37.1,BC,Canada
 1105,12/17/2008,52.05,QC,Canada
 1108,12/18/2008,12.1,TN,United States
-472,12/18/2008,46,,"France, Metropolitan"
 325,12/19/2008,172.35,ON,Canada
 1109,12/19/2008,84.85,ON,Canada
 1110,12/19/2008,9.25,AB,Canada
@@ -714,7 +713,6 @@ Customer ID,Date,Subtotal,State,Country
 1387,4/11/2009,32.1,AB,Canada
 1400,4/11/2009,19.4,,Puerto Rico
 1401,4/11/2009,14.3,BC,Canada
-1402,4/12/2009,43.35,,"France, Metropolitan"
 1403,4/12/2009,69.25,ON,Canada
 1405,4/13/2009,180.65,QC,Canada
 1282,4/13/2009,79.75,BC,Canada
