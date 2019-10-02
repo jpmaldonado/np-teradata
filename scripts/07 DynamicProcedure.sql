@@ -2,7 +2,6 @@ REPLACE PROCEDURE tutorial.DynamicProcedure(IN optionv VARCHAR(20))
 DYNAMIC RESULT SETS 1
 
 BEGIN
-
 /* Declaring dynamic cursor to get output as resultset  */
     DECLARE select_1 CURSOR WITH RETURN ONLY TO CLIENT FOR
     SELECT customername FROM tutorial.customer;
@@ -17,7 +16,7 @@ BEGIN
     SELECT * FROM tutorial.Product;
     
 /* Opening dynamic cursor using passed parameter */
-    CASE optionv
+    CASE optionv --Argument given by user
     WHEN 'cust' THEN OPEN select_1;
     WHEN 'zip' THEN OPEN select_2;
     WHEN 'prod' THEN OPEN select_3;
