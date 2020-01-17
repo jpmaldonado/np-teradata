@@ -23,3 +23,5 @@ BEGIN
     ELSE OPEN select_4;
     END CASE;
 END;
+
+CALL DynamicProcedure('all')

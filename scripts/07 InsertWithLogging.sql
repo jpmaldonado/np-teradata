@@ -65,7 +65,9 @@ BEGIN
 
 END; 
 
+
 /* Calling and testing procedure */
 CALL InsertWithLogging(msg)
 SELECT * FROM tutorial.department
 
+SELECT * FROM tutorial.runtime_error
