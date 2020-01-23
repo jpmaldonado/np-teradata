@@ -28,12 +28,12 @@ main: BEGIN
 			CASE WHEN my_cat = cat THEN-- check that my_cat matches the input parameter
 				INSERT INTO test VALUES (:my_prod, :my_cat);
 			ELSE 
-				BEGIN
+				BEGIN  --It must be there to give an altertative to CASE
 				END;
 			END CASE;
 	END while copy;
 	--CLOSE cur;	
 END main;
 
-CALL ProdCategory('Cycling');
-SELECT * FROM test
+CALL ProdCategory('Camping');
+SELECT * FROM test;
